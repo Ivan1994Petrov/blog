@@ -9,3 +9,8 @@ def home(request):
     boards = Board.objects.all()
 
     return render(request, 'home.html', context={'boards': boards})
+
+def board_topics(request, pk):
+
+    board = Board.objects.get(pk=pk)
+    return render(request, 'topics.html', context={'board': board})
