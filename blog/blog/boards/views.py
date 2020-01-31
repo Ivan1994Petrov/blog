@@ -10,7 +10,13 @@ def home(request):
 
     return render(request, 'home.html', context={'boards': boards})
 
+
 def board_topics(request, pk):
 
     board = get_object_or_404(Board, pk=pk)
     return render(request, 'topics.html', context={'board': board})
+
+
+def new_topic(request, pk):
+    board = get_object_or_404(Board, pk=pk)
+    return render(request, 'new_topic.html', context={'board': board})
