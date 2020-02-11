@@ -34,6 +34,7 @@ def new_topic(request, pk):
                 topic=topic,
                 created_by=user
             )
+            post.save()
             return redirect('board_topics', pk=board.pk)  # TODO: redirect to the created topic page
     else:
         form = NewTopicForm()
