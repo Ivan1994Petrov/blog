@@ -6,8 +6,16 @@ from django.views.generic import ListView
 from blogcontent.models import Post, Comment
 from blogcontent.forms import EmailPostForm, CommentForm
 
-def post_list(request):
+from taggit.models import Tag
+
+def post_list(request, tag_slug=None):
     object_list = Post.published.all()
+    tag = None
+
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        object_list = object_list.filter(tags__in=[tag])
+
     paginator = Paginator(object_list, 3)
     page = request.GET.get('page')
 
@@ -21,7 +29,8 @@ def post_list(request):
                   template_name='blog/post/list.html',
                   context={
                       'page': page,
-                      'posts': posts
+                      'posts': posts,
+                      'tag': tag,
                   })
 
 
@@ -81,31 +90,3 @@ def post_share(request, post_id):
     return render(request, 'blog/post/share.html', {'post': post,
                                                     'form': form,
                                                     'sent': sent})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
